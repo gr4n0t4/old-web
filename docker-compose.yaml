@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+    web:
+        build:
+            context: ./php
+            dockerfile: Dockerfile
+        env_file:
+            - php/.env            
+        volumes:
+            - ./php/html:/var/www/html
+        networks:
+            - database_apache_network
+        ports:
+            - 80:80
+            - 443:443            
+        depends_on:
+            - db
+    db:
+        build:
+            context: ./mysql
+            dockerfile: Dockerfile
+        ports:
+            - 3306
+        env_file:
+            - mysql/.env
+        volumes:
+            - ./mysql/data:/mysql/data
+        networks:
+            - database_apache_network            
+networks:
+    database_apache_network:
+        driver: bridge         
