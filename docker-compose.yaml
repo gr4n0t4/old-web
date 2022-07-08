@@ -20,12 +20,15 @@ services:
         build:
             context: ./mysql
             dockerfile: Dockerfile
+        entrypoint: /mysql/entrypoint.sh
         ports:
             - 3306
         env_file:
             - mysql/.env
         volumes:
             - ./mysql/data:/mysql/data
+            - ./mysql/all-databases.sql:/root/databases.sql
+            - ./mysql/entrypoint.sh:/mysql/entrypoint.sh
         networks:
             - database_apache_network            
 networks:
